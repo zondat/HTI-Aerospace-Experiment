@@ -1,6 +1,7 @@
 package vn.hti.aerospace.experiment;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,14 +25,14 @@ public class SolarDaySample {
 	private String openCircuitVoltage = "voltage";
 	private String shortCircuitCurrent = "current";
 	
-	public SolarDaySample(String fileName) {
-		file = new File(fileName);
+	public SolarDaySample(String filePath) {
+		file = new File(filePath);
 		data = new ArrayList<SolarData>();
 		readData();
 	}
 	
 	
-	public void readStartRecordDate() {
+	public void readStartRecordDates() {
 		String fileName = file.getName();
 		String[] timeData = fileName.split("_");
 		String dateStr = timeData[0];
@@ -43,12 +44,30 @@ public class SolarDaySample {
 										Integer.parseInt(startTimeStr.substring(0, 2)),
 										Integer.parseInt(startTimeStr.substring(2, 4)), 0);
 		
+		String endTimeStr = timeData[2];
+		if (!endTimeStr.contains("_")) {
+			endRecordTime = new RecordTime(2023, 
+					Integer.parseInt(dateStr.substring(2, 4)), 
+					Integer.parseInt(dateStr.substring(0, 2)), 
+					Integer.parseInt(endTimeStr.substring(0, 2)),
+					Integer.parseInt(endTimeStr.substring(2, 4)), 0);
+		}
+		else {
+			endRecordTime = new RecordTime();
+			endRecordTime.setYear(2023);
+			endRecordTime.setMonth(Integer.parseInt(dateStr.substring(2, 4)));
+			endRecordTime.setDay(Integer.parseInt(dateStr.substring(0, 2)));
+			endRecordTime.setHour(0);
+			endRecordTime.setMinute(0);
+			endRecordTime.setSecond(0);
+		}
+		
 	}
 	
 	public boolean readData() {
 		try {
             if (file == null || !file.exists()) return false;
-            readStartRecordDate();
+            readStartRecordDates();
             
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -57,7 +76,7 @@ public class SolarDaySample {
 
             NodeList powerNodeList = doc.getElementsByTagName(powerTag);
             for (int i=0; i<powerNodeList.getLength(); i++) {
-            	RecordTime recordTime =  RecordTime.getTime(startRecordTime, i);
+            	RecordTime recordTime =  RecordTime.computeTimeFromElapsedTime(startRecordTime, i);
             	Node powerNode = powerNodeList.item(i);
             	Element power = (Element) powerNode;
             	Node openCircuitVoltageNode = power.getElementsByTagName(openCircuitVoltage).item(0);
@@ -119,5 +138,23 @@ public class SolarDaySample {
 		this.endRecordTime = endRecordTime;
 	}
 	
+	public String getInfo() {
+		StringBuilder info = new StringBuilder();
+		info.append(getFile().getName());
+		info.append("\n");
+		
+		for (SolarData dat : data) {
+			info.append(dat.getInfo());
+			info.append("\n");
+		}
+		return info.toString();
+	}
+	
+	public static void main(String[] args) {
+		String filePath = "D:\\Workspaces\\eclipse\\HTI-Aerospace-Experiment\\vn.hti.aerospace.experiment\\data\\0703_0950_1800.TXT";
+		SolarDaySample dailyDataSample = new SolarDaySample(filePath);
+		System.out.println(dailyDataSample.getInfo());
+		
+	}
 	
 }

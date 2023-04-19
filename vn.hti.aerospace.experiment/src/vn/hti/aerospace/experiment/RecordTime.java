@@ -22,12 +22,14 @@ public class RecordTime {
 		this.second = second;
 	}
 	
-	public static RecordTime getTime(RecordTime startTime, int duration) {
-		int newSecond = (startTime.getSecond() + duration) % 60;
-		int durationInMinute = (startTime.getSecond() + duration) / 60;
-		int newMinute = durationInMinute % 60;
-		int durationInHour = durationInMinute / 60;
-		int newHour = durationInHour % 24;
+	public static RecordTime computeTimeFromElapsedTime(RecordTime startTime, int duration) {
+		int passedHours = duration / 3600;
+		int passedMinutes = (duration - passedHours * 3600) / 60;
+		int passedSecond = duration - passedHours * 3600 - passedMinutes * 60;
+		
+		int newSecond = (startTime.getSecond() + passedSecond) % 60;
+		int newMinute = (startTime.getMinute() + passedMinutes + (startTime.getSecond() + passedSecond) / 60) % 60;
+		int newHour = (startTime.getHour() + passedHours + (startTime.getMinute() + passedMinutes + (startTime.getSecond() + passedSecond) / 60) / 60 ) % 24;
 		
 		return new RecordTime(startTime.getYear(), startTime.getMonth(), startTime.getDay(), newHour, newMinute, newSecond);
 	}
@@ -76,6 +78,16 @@ public class RecordTime {
 	}
 	public void setSecond(int second) {
 		this.second = second;
+	}
+	
+	public String getInfo() {
+		StringBuilder info = new StringBuilder();
+		info.append(hour);
+		info.append(":");
+		info.append(minute);
+		info.append(":");
+		info.append(second);
+		return info.toString();
 	}
 	
 }

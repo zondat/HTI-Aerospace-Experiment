@@ -48,4 +48,13 @@ public class SolarData {
 		this.recordTime = recordTime;
 	}
 	
+	public String getInfo() {
+		StringBuilder info = new StringBuilder();
+		info.append(recordTime.getInfo());
+		info.append("  Voc=");
+		info.append(openCircuitVoltage);
+		info.append("  Isc=");
+		info.append(shortCircuitCurrent);
+		return info.toString();
+	}
 }
