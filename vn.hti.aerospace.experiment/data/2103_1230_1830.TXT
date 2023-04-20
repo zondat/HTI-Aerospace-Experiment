@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<data>
 <!-- 
 Logging flight info
  -->
@@ -202431,3 +202432,4 @@ Logging flight info
   <voltage>0.13</voltage>
   <current>0.08</current>
 </power>
+</data>

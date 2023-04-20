@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
-Logging flight info
- -->
+<data>
+<!-- Logging flight info-->
 <logging_time>
   <hour>37</hour>
   <minute>165</minute>
@@ -1209,11 +1208,6 @@ Logging flight info
   <voltage>20.74</voltage>
   <current>1.39</current>
 </power>
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!-- 
-Logging flight info
- -->
 <logging_time>
   <hour>37</hour>
   <minute>165</minute>
@@ -101942,3 +101936,4 @@ Logging flight info
   <voltage>16.28</voltage>
   <current>0.17</current>
 </power>
+</data>

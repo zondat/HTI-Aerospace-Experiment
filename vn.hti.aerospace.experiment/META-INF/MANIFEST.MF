@@ -3,4 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: vn.hti.aerospace.experiment
 Bundle-SymbolicName: vn.hti.aerospace.experiment; singleton:=true
 Bundle-Version: 0.1.0.qualifier
-Require-Bundle: org.eclipse.emf.ecore
+Require-Bundle: org.eclipse.emf.ecore,
+ vn.hti.infra.exportation;bundle-version="0.1.0"

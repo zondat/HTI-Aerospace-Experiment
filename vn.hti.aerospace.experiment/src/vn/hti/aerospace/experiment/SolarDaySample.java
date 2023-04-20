@@ -1,12 +1,12 @@
 package vn.hti.aerospace.experiment;
 
 import java.io.File;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.knowm.xchart.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -64,6 +64,21 @@ public class SolarDaySample {
 		
 	}
 	
+	public void drawData() {
+		List<Integer> time = new ArrayList();
+		List<Float> power = new ArrayList();
+		
+		for (SolarData sample : data) {
+			time.add(data.indexOf(sample));
+			power.add(sample.getSolarSupplyPower());
+		}
+		
+		XYChart solarPowerChart = QuickChart.getChart("Solar Effective Power Chart", "Time", "Power", "EffectivePower(time)", time, power);
+		
+		// Show it
+	    new SwingWrapper(solarPowerChart).displayChart();	
+	}
+	
 	public boolean readData() {
 		try {
             if (file == null || !file.exists()) return false;
@@ -92,8 +107,7 @@ public class SolarDaySample {
             return false;
         }
 	}
-	
-	
+		
 	private String getNodeContent(Node node) {
 		Element eElement = (Element) node;
         String nameValue = eElement.getTextContent();
@@ -151,10 +165,18 @@ public class SolarDaySample {
 	}
 	
 	public static void main(String[] args) {
-		String filePath = "D:\\Workspaces\\eclipse\\HTI-Aerospace-Experiment\\vn.hti.aerospace.experiment\\data\\0703_0950_1800.TXT";
+//		String filePath = "D:\\Workspaces\\eclipse\\HTI-Aerospace-Experiment\\vn.hti.aerospace.experiment\\data\\0703_0950_1800.TXT";
+//		String filePath = "D:\\Workspaces\\eclipse\\HTI-Aerospace-Experiment\\vn.hti.aerospace.experiment\\data\\1003_1000_1800.TXT";
+//		String filePath = "D:\\Workspaces\\eclipse\\HTI-Aerospace-Experiment\\vn.hti.aerospace.experiment\\data\\0903_1030_1800.TXT";
+//		String filePath = "D:\\Workspaces\\eclipse\\HTI-Aerospace-Experiment\\vn.hti.aerospace.experiment\\data\\1103_1000_1800.TXT";
+//		String filePath = "D:\\Workspaces\\eclipse\\HTI-Aerospace-Experiment\\vn.hti.aerospace.experiment\\data\\1303_1400_1715.TXT";
+//		String filePath = "D:\\Workspaces\\eclipse\\HTI-Aerospace-Experiment\\vn.hti.aerospace.experiment\\data\\1403_1000_1800.TXT";
+//		String filePath = "D:\\Workspaces\\eclipse\\HTI-Aerospace-Experiment\\vn.hti.aerospace.experiment\\data\\2003_1000_1830.TXT";
+//		String filePath = "D:\\Workspaces\\eclipse\\HTI-Aerospace-Experiment\\vn.hti.aerospace.experiment\\data\\2103_1230_1830.TXT";
+		String filePath = "D:\\Workspaces\\eclipse\\HTI-Aerospace-Experiment\\vn.hti.aerospace.experiment\\data\\2203_1000_1900.TXT";
 		SolarDaySample dailyDataSample = new SolarDaySample(filePath);
-		System.out.println(dailyDataSample.getInfo());
-		
+//		System.out.println(dailyDataSample.getInfo());
+		dailyDataSample.drawData();
 	}
 	
 }
